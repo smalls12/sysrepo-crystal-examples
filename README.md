@@ -9,9 +9,9 @@ the bindings as part of your own app.
 
 ## Usage
 
-`crystal build src/application_changes_example.cr`
-`crystal build src/get_item.cr`
-`crystal build src/oper_data_example.cr`
+`crystal build src/application_changes_example.cr`<br>
+`crystal build src/get_item.cr`<br>
+`crystal build src/oper_data_example.cr`<br>
 
 ## Contributing
 

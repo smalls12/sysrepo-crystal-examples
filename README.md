@@ -1,18 +1,17 @@
 # sysrepo-crystal-examples
 
-TODO: Write a description here
+Examples for the [sysrepo-crystal](https://github.com/smalls12/sysrepo-crystal.git) bindings.
 
-## Installation
+[libyang-crystal](https://github.com/smalls12/libyang-crystal.git) bindings are also used where necessary.
 
-TODO: Write installation instructions here
+This is provided in a separate repository to show how to use `shards install` for installing
+the bindings as part of your own app.
 
 ## Usage
 
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
+`crystal build src/application_changes_example.cr`
+`crystal build src/get_item.cr`
+`crystal build src/oper_data_example.cr`
 
 ## Contributing
 

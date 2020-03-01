@@ -17,7 +17,7 @@ request_xpath : String | Nil, request_id : UInt32, parent : DataNode*, private_d
   # had to use not nil here
   mod = ctx.get_module(module_name.not_nil!)
 
-  parent = DataNode.new(ctx, "/odin:stateData", nil, Libyang::LYD_ANYDATA_VALUETYPE::LYD_ANYDATA_CONSTSTRING, 0)
+  parent = DataNode.new(ctx, "/odin:stateData", nil, Libyang::LYDANYDATAVALUETYPE::LYD_ANYDATA_CONSTSTRING, 0)
   # stateData = DataNode.new(parent, mod, "stateData")
   blah = DataNode.new(parent, mod, "blah", "4")
 

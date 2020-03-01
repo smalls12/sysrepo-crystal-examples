@@ -14,15 +14,13 @@ development_dependencies:
 
 dependencies:
   sysrepo-crystal:
-    version: ~> 0.1.0
-    path: /home/adam/src/scratch/crystal/sysrepo-crystal
+    git: https://github.com/smalls12/sysrepo-crystal.git
   
   libyang-crystal:
-    version: ~> 0.1.0
-    path: /home/adam/src/scratch/crystal/libyang-crystal
+    git: https://github.com/smalls12/libyang-crystal.git
 
 targets:
   sysrepo-crystal-examples:
     main: src/oper_data_example.cr
-
-
+  
+description: Examples using the sysrepo and libyang crystal C bindings

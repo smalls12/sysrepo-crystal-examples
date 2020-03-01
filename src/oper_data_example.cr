@@ -16,8 +16,8 @@ _request_xpath : String | Nil, _request_id : UInt32, parent : DataNode, _private
   mod = ctx.get_module(module_name.not_nil!)
 
   parent.reset(ctx, "/odin:stateData", nil, Libyang::LYDANYDATAVALUETYPE::LYD_ANYDATA_CONSTSTRING, 0)
-  blah = DataNode.new(parent, mod, "blah", "4")
-  
+  DataNode.new(parent, mod, "blah", "4")
+
   0 # return
 }
 

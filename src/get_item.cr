@@ -5,7 +5,7 @@ require "./sysrepo-crystal"
 require "./connection"
 require "./session"
 
-LOG_MESSAGE = ->( level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char* ) { puts String.new message }
+LOG_MESSAGE = ->( _level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char* ) { puts String.new message }
 
 module GetItem
   VERSION = "0.1.0"

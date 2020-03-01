@@ -7,23 +7,18 @@ require "sysrepo-crystal/connection"
 require "sysrepo-crystal/session"
 require "sysrepo-crystal/subscribe"
 
-LOG_MESSAGE = ->( level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char* ) { puts String.new message }
-OPER_DATA = ->( session : Session, module_name : String | Nil, xpath : String | Nil,
-request_xpath : String | Nil, request_id : UInt32, parent : DataNode*, private_data : Void* )
+LOG_MESSAGE = ->( _level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char* ) { puts String.new message }
+OPER_DATA = ->( session : Session, module_name : String | Nil, _xpath : String | Nil,
+_request_xpath : String | Nil, _request_id : UInt32, parent : DataNode, _private_data : Void* )
 {
-  puts " === OPER_DATA_EXTERNAL === "
-
   ctx = Context.new(session.get_context())
   # had to use not nil here
   mod = ctx.get_module(module_name.not_nil!)
 
-  parent = DataNode.new(ctx, "/odin:stateData", nil, Libyang::LYDANYDATAVALUETYPE::LYD_ANYDATA_CONSTSTRING, 0)
-  # stateData = DataNode.new(parent, mod, "stateData")
+  parent.reset(ctx, "/odin:stateData", nil, Libyang::LYDANYDATAVALUETYPE::LYD_ANYDATA_CONSTSTRING, 0)
   blah = DataNode.new(parent, mod, "blah", "4")
-
-  puts " === OPER_DATA_EXTERNAL === "
-
-  return 0
+  
+  0 # return
 }
 
 module OperDataExample
@@ -43,14 +38,10 @@ module OperDataExample
   session = Session.new(connection)
   subscribe = Subscribe.new(session)
 
-  sleep(1)
-
   data = Pointer(Void).malloc(0)
   module_name = "odin"
   xpath = "/odin:stateData"
   subscribe.oper_data_subscribe(module_name, xpath, OPER_DATA, data, Libsysrepo::SysrepoSubscriptionOptions::DEFAULT)
-
-  sleep(1)
 
   puts "Wait for CTRL-C ..."
   while running

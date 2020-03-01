@@ -5,20 +5,16 @@ require "./connection"
 require "./session"
 require "./subscribe"
 
-LOG_MESSAGE = ->( level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char* ) { puts String.new message }
-MODULE_CHANGE = ->( session : Session, module_name : String | Nil, xpath : String | Nil,
-event : Libsysrepo::SysrepoEvent, request_id : UInt32, private_data : Void* )
+LOG_MESSAGE = ->( _level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char* ) { puts String.new message }
+MODULE_CHANGE = ->( session : Session, _module_name : String | Nil, _xpath : String | Nil,
+_event : Libsysrepo::SysrepoEvent, _request_id : UInt32, _private_data : Void* )
 {
-  puts " === MODULE_CHANGE_EXTERNAL === "
-
   puts "Perform get item..."
   value = Libsysrepo.sr_get_value()
   Libsysrepo.sr_get_item(session.session, "/odin:configData/bah", 5000, pointerof(value) )
   Libsysrepo.sr_print_val(value)
 
-  puts " === MODULE_CHANGE_EXTERNAL === "
-
-  return 0
+  0
 }
 
 module ModuleChangeSubscribe

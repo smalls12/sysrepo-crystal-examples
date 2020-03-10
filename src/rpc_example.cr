@@ -1,12 +1,12 @@
 # ===========================================================
-# `OperDataExample`
+# `RPCExample`
 #
-# Testing State Data Subscription functionality
+# Testing RPC Subscription functionality
 # 
 # 1. Create connection to sysrepo
 # 2. Create session with sysrepo
-# 3. Perform state data subscription to sysrepo
-# 4a. On state data callback, populate state data nodes with libyang crystal bindings
+# 3. Perform RPC subscription to sysrepo
+# 4a. On RPC callback, print input values
 # 4b. Wait until Ctrl+C
 # 5. Stop session with sysrepo
 # 6. Disconnect from sysrepo
@@ -21,18 +21,14 @@ require "sysrepo-crystal/session"
 require "sysrepo-crystal/subscribe"
 
 LOG_MESSAGE = ->(_level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char*) { puts String.new message }
-OPER_DATA   = ->(session : Session, module_name : String | Nil, _xpath : String | Nil, _request_xpath : String | Nil, _request_id : UInt32, parent : DataNode, _private_data : Void*) {
-  ctx = Context.new(session.get_context)
-  # had to use not nil here
-  mod = ctx.get_module(module_name.not_nil!)
-
-  parent.reset(ctx, "/odin:stateData", nil, Libyang::LYDANYDATAVALUETYPE::LYD_ANYDATA_CONSTSTRING, 0)
-  DataNode.new(parent, mod, "blah", "4")
-
+# SessionContext*, LibC::Char*, SysrepoValue*, LibC::UInt32T, SysrepoEvent, LibC::UInt32T, SysrepoValue**, LibC::UInt32T, Void* -> LibC::Int32T
+RPC = ->(session : Session, op_path : String | Nil, input : Libsysrepo::SysrepoValue*, input_cnt : UInt32, event : Libsysrepo::SysrepoEvent, _request_id : UInt32, output : Libsysrepo::SysrepoValue**, output_cnt : UInt32, _private_data : Void*) {
+  puts "RPC CALLBACK EXTERNAL"
+  
   0 # return
 }
 
-module OperDataExample
+module RPCExample
   VERSION = "0.1.0"
 
   running = true
@@ -50,9 +46,8 @@ module OperDataExample
   subscribe = Subscribe.new(session)
 
   data = Pointer(Void).malloc(0)
-  module_name = "odin"
-  xpath = "/odin:stateData"
-  subscribe.oper_data_subscribe(module_name, xpath, OPER_DATA, data, Libsysrepo::SysrepoSubscriptionOptions::DEFAULT)
+  xpath = "/odin:activate-software-image"
+  subscribe.sr_rpc_subscribe(xpath, RPC, data, 0, Libsysrepo::SysrepoSubscriptionOptions::DEFAULT)
 
   puts "Wait for CTRL-C ..."
   while running

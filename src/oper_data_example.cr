@@ -2,7 +2,7 @@
 # `OperDataExample`
 #
 # Testing State Data Subscription functionality
-# 
+#
 # 1. Create connection to sysrepo
 # 2. Create session with sysrepo
 # 3. Perform state data subscription to sysrepo

@@ -2,7 +2,7 @@
 # `RPCExample`
 #
 # Testing RPC Subscription functionality
-# 
+#
 # 1. Create connection to sysrepo
 # 2. Create session with sysrepo
 # 3. Perform RPC subscription to sysrepo
@@ -22,9 +22,7 @@ require "sysrepo-crystal/subscribe"
 
 LOG_MESSAGE = ->(_level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char*) { puts String.new message }
 # SessionContext*, LibC::Char*, SysrepoValue*, LibC::UInt32T, SysrepoEvent, LibC::UInt32T, SysrepoValue**, LibC::UInt32T, Void* -> LibC::Int32T
-RPC = ->(session : Session, op_path : String | Nil, input : Libsysrepo::SysrepoValue*, input_cnt : UInt32, event : Libsysrepo::SysrepoEvent, _request_id : UInt32, output : Libsysrepo::SysrepoValue**, output_cnt : UInt32, _private_data : Void*) {
-  puts "RPC CALLBACK EXTERNAL"
-  
+RPC = ->(_session : Session, _op_path : String | Nil, _input : Libsysrepo::SysrepoValue*, _input_cnt : UInt32, _event : Libsysrepo::SysrepoEvent, _request_id : UInt32, _output : Libsysrepo::SysrepoValue**, _output_cnt : UInt32, _private_data : Void*) {
   0 # return
 }
 

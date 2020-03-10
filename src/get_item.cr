@@ -2,7 +2,7 @@
 # `GetItem`
 #
 # Testing GetItem functionality
-# 
+#
 # 1. Create connection to sysrepo
 # 2. Create session with sysrepo
 # 3. Perform GetItem

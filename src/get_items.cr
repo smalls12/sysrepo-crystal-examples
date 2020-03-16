@@ -23,9 +23,9 @@ module GetItem
   connection = Connection.new
   session = Session.new(connection)
 
-  puts "Perform get item..."
-  value = session.get_item("/odin:configData/bah", 5000)
-  puts value
+  puts "Perform get items..."
+  array = session.get_items("/odin:configData/*", 5000)
+  array.each{ |value| puts value }
 
   session.session_stop
   connection.disconnect

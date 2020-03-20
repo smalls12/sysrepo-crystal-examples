@@ -23,7 +23,7 @@ require "sysrepo-crystal/subscribe"
 LOG_MESSAGE = ->(_level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char*) { puts String.new message }
 # SessionContext*, LibC::Char*, SysrepoValue*, LibC::UInt32T, SysrepoEvent, LibC::UInt32T, SysrepoValue**, LibC::UInt32T, Void* -> LibC::Int32T
 RPC = ->(_session : Session, _op_path : String | Nil, input_values : Array(CrystalSysrepoValue), _event : Libsysrepo::SysrepoEvent, _request_id : UInt32, output : Array(CrystalSysrepoValue), _private_data : Void*) {
-  # input_values.each{ |value| puts value }
+  input_values.each{ |value| puts value }
 
   crystal_value = CrystalSysrepoValue.new
   crystal_value.xpath = "/odin:activate-software-image/ugh"

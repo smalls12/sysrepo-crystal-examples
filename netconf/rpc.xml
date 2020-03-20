@@ -1,2 +1,4 @@
 <activate-software-image xmlns="odin">
+    <image-name>who-cares</image-name>
+    <location>somewhere</location>
 </activate-software-image>

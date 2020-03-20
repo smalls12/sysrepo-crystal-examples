@@ -1,0 +1,86 @@
+module odin {
+  yang-version 1.1;
+  namespace "odin";
+  prefix odin;
+
+  container configData {
+      leaf bah {
+          type uint8;
+          default 8;
+      }
+
+      leaf okay {
+          type uint16;
+          default 16;
+      }
+  }
+
+  container stateData {
+      config false;
+      leaf blah {
+          type uint8;
+      }
+  }
+
+  rpc activate-software-image {
+    input {
+      leaf image-name {
+        type string;
+      }
+      leaf location {
+        type string;
+        default "/";
+        must ". != 'invalid location'";
+      }
+    }
+    output {
+      leaf ugh {
+        type uint8;
+      }
+      leaf status {
+        type string;
+        must ". != 'invalid status'";
+      }
+      leaf version {
+        type string;
+      }
+      leaf location {
+        type string;
+        default "/";
+      }
+      container init-log {
+        list log-msg {
+          key "msg time";
+          leaf msg {
+            type string;
+          }
+          leaf time {
+            type uint32;
+          }
+          leaf msg-type {
+            type enumeration {
+              enum "error" {
+                value 1;
+              }
+              enum "warning" {
+                value 2;
+              }
+              enum "debug" {
+                value 3;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  notification test-notif {
+    leaf val1 {
+      type string;
+    }
+    leaf val2 {
+      type string;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 # ===========================================================
-# `OperDataExample`
+# `NotifExample`
 #
-# Testing State Data Subscription functionality
+# Testing Event Notification Subscription functionality
 #
 # 1. Create connection to sysrepo
 # 2. Create session with sysrepo
@@ -21,18 +21,12 @@ require "sysrepo-crystal/session"
 require "sysrepo-crystal/subscribe"
 
 LOG_MESSAGE = ->(_level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char*) { puts String.new message }
-OPER_DATA   = ->(session : Session, module_name : String | Nil, _xpath : String | Nil, _request_xpath : String | Nil, _request_id : UInt32, parent : DataNode, _private_data : Void*) {
-  ctx = Context.new(session.get_context)
-  # had to use not nil here
-  mod = ctx.get_module(module_name.not_nil!)
-
-  parent.reset(ctx, "/odin:stateData", nil, Libyang::LYDANYDATAVALUETYPE::LYD_ANYDATA_CONSTSTRING, 0)
-  DataNode.new(parent, mod, "blah", "4")
-
+EVENT_NOTIF = ->(_session : Session, _event_notif_type : Libsysrepo::SysrepoEventNotificationType, _path : String | Nil, values : Array(CrystalSysrepoValue), _timestamp : Libsysrepo::SysrepoTime, _private_data : Void*) {
+  values.each{ |value| puts value }
   0 # return
 }
 
-module OperDataExample
+module NotifExample
   VERSION = "0.1.0"
 
   running = true
@@ -51,8 +45,8 @@ module OperDataExample
 
   data = Pointer(Void).malloc(0)
   module_name = "odin"
-  xpath = "/odin:*"
-  subscribe.oper_data_subscribe(module_name, xpath, OPER_DATA, data, Libsysrepo::SysrepoSubscriptionOptions::DEFAULT)
+  xpath = "/odin:test-notif"
+  subscribe.event_notif_subscribe(module_name, xpath, EVENT_NOTIF, data, Libsysrepo::SysrepoSubscriptionOptions::DEFAULT)
 
   puts "Wait for CTRL-C ..."
   while running

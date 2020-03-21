@@ -14,7 +14,7 @@
 # Also uses crystal stdlib command line OptionParser
 # ===========================================================
 
-require "option_parser"
+require "./option_parser"
 
 require "sysrepo-crystal/connection"
 require "sysrepo-crystal/session"

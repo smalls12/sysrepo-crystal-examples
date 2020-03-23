@@ -24,14 +24,6 @@ LOG_MESSAGE = ->(_level : Libsysrepo::SysrepoLoggingLevel, message : LibC::Char*
 module RPCSendExample
   VERSION = "0.1.0"
 
-  running = true
-
-  Signal::INT.trap do
-    puts "CTRL-C handler here!"
-    running = false
-  end
-
-  # TODO: Put your code here
   Libsysrepo.sr_log_set_cb(LOG_MESSAGE)
 
   connection = Connection.new
@@ -39,12 +31,31 @@ module RPCSendExample
 
   path = "/odin:activate-software-image"
 
-  session.rpc_send(path, nil, 0)
+  crystal_input_values = Array(CrystalSysrepoValue).new
 
-  puts "Wait for CTRL-C ..."
-  while running
-    sleep 0.01
-  end
+  crystal_value = CrystalSysrepoValue.new
+  crystal_value.xpath = "/odin:activate-software-image/image-name"
+  crystal_value.type = CrystalSysrepoType::SR_STRING_T
+  data = CrystalSysrepoData.new
+  data.string_val = "whoa"
+  crystal_value.data = data
+
+  crystal_input_values.push(crystal_value)
+
+  crystal_value = CrystalSysrepoValue.new
+  crystal_value.xpath = "/odin:activate-software-image/location"
+  crystal_value.type = CrystalSysrepoType::SR_STRING_T
+  data = CrystalSysrepoData.new
+  data.string_val = "here"
+  crystal_value.data = data
+
+  crystal_input_values.push(crystal_value)
+
+  crystal_output_values = Array(CrystalSysrepoValue).new
+
+  session.rpc_send(path, crystal_input_values, crystal_output_values)
+
+  crystal_output_values.each{ |value| puts value }
 
   session.session_stop
   connection.disconnect
